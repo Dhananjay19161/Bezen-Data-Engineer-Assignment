@@ -47,9 +47,6 @@ Product_with_prices
 count_product_without_prices_product_type=Product_without_prices.groupby(['product_type']).size().reset_index(name='count of products')
 
 # %%
-
-
-# %%
 count_product_without_prices_category=Product_without_prices.groupby(['category']).size().reset_index(name='count of products')
 count_product_without_prices_level_1=Product_without_prices.groupby(['level_1']).size().reset_index(name='count of products')
 
@@ -92,13 +89,83 @@ count_product_with_prices_level_1
 Product_with_prices['price_string'] = Product_with_prices['price_string'].str.replace('$', '')
 
 # %% [markdown]
-# ## Again Inserting $ to make all prices with dollar
+# ## Fixing Unfiltered Prices
 
 # %%
-Product_with_prices['price_string'] ='$'+ Product_with_prices['price_string'].astype(str)
+unfiltered=df.loc[df['price_string_unf'].notnull()]
+
 
 # %%
-Product_with_prices['price_string']
+unfiltered
+
+# %% [markdown]
+# ## Removed alphabets from price_string_unf
+
+# %%
+unfiltered['price_string_unf'] = unfiltered['price_string_unf'].str.replace("[a-zA-Z]", '')
+
+
+# %% [markdown]
+# ## Removed : from price_string_unf
+
+# %%
+unfiltered['price_string_unf'] = unfiltered['price_string_unf'].str.replace(":", '')
+
+# %% [markdown]
+# ## removed \n from price_string_unf
+
+# %%
+unfiltered['price_string_unf'] = unfiltered['price_string_unf'].str.replace('\n','')
+
+# %% [markdown]
+# ## Removed spaces from price_string_unf
+
+# %%
+unfiltered['price_string_unf'] = unfiltered['price_string_unf'].str.replace(' ','')
+
+# %%
+unfiltered['price_string_unf']
+
+# %% [markdown]
+# ## Split to remove garbage value
+
+# %%
+list=unfiltered['price_string_unf'].str.split('$',2)
+
+# %%
+x=list.apply(lambda col: col[1])
+
+# %%
+unfiltered['price_string_unf']=x
+
+# %%
+unfiltered['price_string_unf']
+
+# %%
+unfiltered['price_string_unf']='$'+ unfiltered['price_string_unf'].astype(str)
+
+# %%
+unfiltered['price_string_unf']
+
+# %%
+unfiltered
+
+# %%
+value=unfiltered['price_string_unf'].str.replace('$', '').astype(float)
+
+# %%
+value
+
+# %%
+## Therefore able to remove garbage values from price_string_unf
+unfiltered.insert(3, "currency", "$")
+unfiltered.insert(4, "value", value)
+
+# %%
+unfiltered
+
+# %% [markdown]
+# ## Therefore able to remove garbage values from price_string_unf
 
 # %% [markdown]
 # ## Creating new field value extracted from price_string and saved as float
