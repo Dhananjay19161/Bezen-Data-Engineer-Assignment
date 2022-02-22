@@ -3,6 +3,7 @@
 
 # %%
 import pandas as pd
+import seaborn as sns
 
 # %% [markdown]
 # # Reading csv file
@@ -43,20 +44,43 @@ Product_with_prices
 
 # %%
 #Count of products without prices in Each Product Type,Category,Level1
-count_product_without_prices=Product_without_prices.groupby(['product_type','category','level_1']).size().reset_index(name='count of products')
+count_product_without_prices_product_type=Product_without_prices.groupby(['product_type']).size().reset_index(name='count of products')
 
 # %%
-count_product_without_prices
+
+
+# %%
+count_product_without_prices_category=Product_without_prices.groupby(['category']).size().reset_index(name='count of products')
+count_product_without_prices_level_1=Product_without_prices.groupby(['level_1']).size().reset_index(name='count of products')
+
+
+
+# %%
+count_product_without_prices_product_type
+
+# %%
+count_product_without_prices_category
+
+# %%
+count_product_without_prices_level_1
 
 # %% [markdown]
 # ## Count of products with prices in Each Product Type,Category,Level1
 
 # %%
 #Count of products without prices in Each Product Type,Category,Level1
-count_product_with_prices=Product_with_prices.groupby(['product_type','category','level_1']).size().reset_index(name='count of products')
+count_product_with_prices_product_type=Product_with_prices.groupby(['product_type']).size().reset_index(name='count of products')
+count_product_with_prices_category=Product_with_prices.groupby(['category']).size().reset_index(name='count of products')
+count_product_with_prices_level_1=Product_with_prices.groupby(['level_1']).size().reset_index(name='count of products')
 
 # %%
-count_product_with_prices
+count_product_with_prices_product_type
+
+# %%
+count_product_without_prices_category
+
+# %%
+count_product_with_prices_level_1
 
 # %% [markdown]
 # # Query 3=>
@@ -105,5 +129,38 @@ category_wise=Product_with_prices.groupby('category')['value'].mean().reset_inde
 
 # %%
 category_wise
+
+# %% [markdown]
+# # Plots
+
+# %% [markdown]
+# ## Plotting count of products without prices for each product_type,category,level_1
+
+# %%
+sns.catplot(x="product_type", y="count of products", data=count_product_without_prices_product_type)
+
+# %%
+sns.catplot(x="category", y="count of products", data=count_product_without_prices_category)
+
+# %%
+sns.catplot(x="level_1", y="count of products", data=count_product_without_prices_level_1)
+
+# %% [markdown]
+# ## Plotting count of products with prices for each product_type,category,level_1
+
+# %%
+sns.catplot(x="product_type", y="count of products", data=count_product_with_prices_product_type)
+
+# %%
+sns.catplot(x="category", y="count of products", data=count_product_with_prices_category)
+
+# %%
+sns.catplot(x="level_1", y="count of products", data=count_product_with_prices_level_1)
+
+# %% [markdown]
+# ## Plotting category wise Average Price
+
+# %%
+sns.catplot(x="category", y="Average Price", data=category_wise)
 
 
